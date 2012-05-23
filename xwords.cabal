@@ -1,0 +1,28 @@
+name:           xwords
+version:        1.1.0
+cabal-version:  >= 1.4
+build-type:     Simple
+license:        BSD3
+license-file:   LICENSE
+copyright:      (c) 2008 Christopher Edward Kuklewicz
+author:         Christopher Edward Kuklewicz
+maintainer:     Chris Kuklewicz <protobuf@personal.mightyreason.com>
+stability:      Works
+homepage:       http://hackage.haskell.org/cgi-bin/hackage-scripts/package/xword
+synopsis:       Fastcgi program to search for Scrabble-like word matches
+description:    Fastcgi program to search for Scrabble-like word matches using templates and wildcards, with sorting by score including bonuses.  This was useful as a learning exercise, perhaps good as an example to others.
+category:       Web
+Tested-With:    GHC ==6.10.1
+data-files:     words
+extra-source-files: Setup.hs, httpd-fastcgi.conf, README
+
+Executable xwords.fastcgi
+  Main-Is:         Main.hs
+  hs-source-dirs:  src
+  ghc-options:     -threaded
+  build-depends:   base >= 4,QuickCheck,HUnit,random,bytestring,array,
+                   containers,xhtml,network,cgi,time,mtl,stm,parsec,
+                   fastcgi
+  other-modules:   CERWS,CSS,Common,Dict,Formed,GenPage,Lookup,
+                   Scrabble,StateKey,Template,Tiles
+  extensions: RankNTypes, FlexibleInstances, MultiParamTypeClasses,ScopedTypeVariables

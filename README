@@ -1,0 +1,28 @@
+This is a program I wrote to (1) help play scrabulous and (2) learn
+how to use Haskell to make a fastcgi program.
+
+It has session state, in that it remembers a client's history based on
+their IP and a unique cookie.  The history is time-limited and will be
+cleaned up by a background thread.  The session state is protected
+from concurrency issues by using STM.  There is no persistant state,
+no database access, no writing to the filesystem (except indirectly
+via the web server's log).
+
+The word list is the tournament word list.  This is installed by cabal
+into the data directory.  It must be readable by the fastcgi process
+spawned by the webserver.  I use apache2, and my configuration file
+for apache2 is included in the source (httpd-fastcgi.conf).
+
+The search is done by first loading the words into an immuatable Trie.
+The search can be jus t the tiles (including wildcard or blank tiles)
+or using the given template (including bonus tiles).  If the hand has
+7 tiles and all are used then a bonus of 50 points is added.
+
+The web page itself is cranked out by the xhtml package and uses a bit
+of css (in its header).  I got carried away and made small AST to
+handle pretty printing the css. Validating the input was incredibly
+annoying.  But that was part of motivation (2).
+
+The CERWS.hs module is a combined Cont Error Reader Writer State thing
+that uses continuation passing to do its tricks.    The continutation style ensures that there is no
+-- quadratic penalty for left-associative use of (>>=) or (>>).
